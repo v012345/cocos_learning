@@ -33,8 +33,28 @@ cc.Class({
   },
   // LIFE-CYCLE CALLBACKS:
   // onLoad () {},
-  start: function start() {} // update (dt) {},
+  getPlayerDistance: function getPlayerDistance() {
+    // Determine the distance according to the position of the Player node
+    var playerPos = this.game.player.getPosition(); // Calculate the distance between two nodes according to their positions
 
+    var dist = this.node.position.sub(playerPos).mag();
+    return dist;
+  },
+  onPicked: function onPicked() {
+    // When the stars are being collected, invoke the interface in the Game script to generate a new star
+    this.game.spawnNewStar(); // Then destroy the current star's node
+
+    this.node.destroy();
+  },
+  start: function start() {},
+  update: function update(dt) {
+    // Determine if the distance between the Star and main character is less than the collecting distance for each frame
+    if (this.getPlayerDistance() < this.pickRadius) {
+      // Invoke collecting behavior
+      this.onPicked();
+      return;
+    }
+  }
 });
 
 cc._RF.pop();

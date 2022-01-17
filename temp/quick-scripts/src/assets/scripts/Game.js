@@ -40,19 +40,6 @@ cc.Class({
 
     this.spawnNewStar();
   },
-  getPlayerDistance: function getPlayerDistance() {
-    // Determine the distance according to the position of the Player node
-    var playerPos = this.game.player.getPosition(); // Calculate the distance between two nodes according to their positions
-
-    var dist = this.node.position.sub(playerPos).mag();
-    return dist;
-  },
-  onPicked: function onPicked() {
-    // When the stars are being collected, invoke the interface in the Game script to generate a new star
-    this.game.spawnNewStar(); // Then destroy the current star's node
-
-    this.node.destroy();
-  },
   spawnNewStar: function spawnNewStar() {
     // Generate a new node in the scene with a preset template
     var newStar = cc.instantiate(this.starPrefab); // Put the newly added node under the Canvas node
