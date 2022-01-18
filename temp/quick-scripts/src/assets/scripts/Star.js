@@ -42,7 +42,9 @@ cc.Class({
   },
   onPicked: function onPicked() {
     // When the stars are being collected, invoke the interface in the Game script to generate a new star
-    this.game.spawnNewStar(); // Then destroy the current star's node
+    this.game.spawnNewStar(); // Invoke the scoring method of the Game script
+
+    this.game.gainScore(); // Then destroy the current star's node
 
     this.node.destroy();
   },
@@ -53,7 +55,12 @@ cc.Class({
       // Invoke collecting behavior
       this.onPicked();
       return;
-    }
+    } // Update the transparency of the star according to the timer in the Game script
+
+
+    var opacityRatio = 1 - this.game.timer / this.game.starDuration;
+    var minOpacity = 50;
+    this.node.opacity = minOpacity + Math.floor(opacityRatio * (255 - minOpacity));
   }
 });
 

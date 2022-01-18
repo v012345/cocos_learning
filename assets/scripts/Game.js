@@ -29,6 +29,11 @@ cc.Class({
         player: {
             default: null,
             type: cc.Node
+        },
+        // Reference of score label
+        scoreDisplay: {
+            default: null,
+            type: cc.Label
         }
     },
 
@@ -37,8 +42,20 @@ cc.Class({
     onLoad: function () {
         // Obtain the anchor point of ground level on the y axis
         this.groundY = this.ground.y + this.ground.height / 2; // "this.ground.top" may also work
+
+        // Initialize timer
+        this.timer = 0;
+        this.starDuration = 0;
+
         // Generate a new star
         this.spawnNewStar();
+        this.score = 0;
+
+    },
+    gainScore: function () {
+        this.score += 1;
+        // Update the words of the scoreDisplay Label
+        this.scoreDisplay.string = 'Score: ' + this.score;
     },
 
 
@@ -50,6 +67,10 @@ cc.Class({
         // Set up a random position for the star
         newStar.setPosition(this.getNewStarPosition());
         newStar.getComponent('Star').game = this;
+
+        // Reset timer, randomly choose a value according the scale of star duration
+        this.starDuration = this.minStarDuration + Math.random() * (this.maxStarDuration - this.minStarDuration);
+        this.timer = 0;
     },
 
     getNewStarPosition: function () {
@@ -67,5 +88,20 @@ cc.Class({
 
     },
 
-    // update (dt) {},
+    update: function (dt) {
+        // Update timer for each frame, when a new star is not generated after exceeding duration
+
+        // Invoke the logic of game failure
+        if (this.timer > this.starDuration) {
+            this.gameOver();
+            return;
+        }
+        this.timer += dt;
+    },
+    gameOver: function () {
+        // Stop the jumping action of the Player node
+        this.player.stopAllActions();
+        // reload the "game" scene
+        cc.director.loadScene('game');
+    }
 });

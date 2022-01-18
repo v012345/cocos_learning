@@ -98,6 +98,9 @@ cc.Class({
     },
 
     // update (dt) {},
+
+
+
     update(dt) {
         // Update speed of each frame according to the current acceleration direction
         let s = this.xSpeed;
