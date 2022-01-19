@@ -17,6 +17,14 @@ cc.Class({
         maxMoveSpeed: 0,
         // Acceleration
         accel: 0,
+
+        // Jumping sound effect resource
+        jumpAudio: {
+            default: null,
+            type: cc.AudioClip
+        },
+
+
         // foo: {
         //     // ATTRIBUTES:
         //     default: null,        // The default value will be used only when the component attaching
@@ -33,16 +41,26 @@ cc.Class({
         //     }
         // },
     },
-    runJumpAction() {
+    runJumpAction: function () {
         // Jump up
         var jumpUp = cc.tween().by(this.jumpDuration, { y: this.jumpHeight }, { easing: 'sineOut' });
+
         // Jump down
         var jumpDown = cc.tween().by(this.jumpDuration, { y: -this.jumpHeight }, { easing: 'sineIn' });
 
-        // Create a easing and perform actions in the order of "jumpUp", "jumpDown"
-        var tween = cc.tween().sequence(jumpUp, jumpDown);
-        // Repeat
+        // Create a easing
+        var tween = cc.tween()
+            // perform actions in the order of "jumpUp", "jumpDown"
+            .sequence(jumpUp, jumpDown)
+            // Add a callback function to invoke the "playJumpSound()" method we define after the action is finished
+            .call(this.playJumpSound, this);
+
+        // Repeat unceasingly
         return cc.tween().repeatForever(tween);
+    },
+    playJumpSound: function () {
+        // Invoke sound engine to play the sound
+        cc.audioEngine.playEffect(this.jumpAudio, false);
     },
 
     onKeyDown(event) {

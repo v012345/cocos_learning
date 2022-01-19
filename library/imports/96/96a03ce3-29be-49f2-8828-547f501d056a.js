@@ -35,6 +35,11 @@ cc.Class({
     scoreDisplay: {
       "default": null,
       type: cc.Label
+    },
+    // Scoring sound effect resource
+    scoreAudio: {
+      "default": null,
+      type: cc.AudioClip
     }
   },
   // LIFE-CYCLE CALLBACKS:
@@ -52,7 +57,9 @@ cc.Class({
   gainScore: function gainScore() {
     this.score += 1; // Update the words of the scoreDisplay Label
 
-    this.scoreDisplay.string = 'Score: ' + this.score;
+    this.scoreDisplay.string = 'Score: ' + this.score.toString(); // Play the scoring sound effect
+
+    cc.audioEngine.playEffect(this.scoreAudio, false);
   },
   spawnNewStar: function spawnNewStar() {
     // Generate a new node in the scene with a preset template

@@ -34,6 +34,11 @@ cc.Class({
         scoreDisplay: {
             default: null,
             type: cc.Label
+        },
+        // Scoring sound effect resource
+        scoreAudio: {
+            default: null,
+            type: cc.AudioClip
         }
     },
 
@@ -55,7 +60,9 @@ cc.Class({
     gainScore: function () {
         this.score += 1;
         // Update the words of the scoreDisplay Label
-        this.scoreDisplay.string = 'Score: ' + this.score;
+        this.scoreDisplay.string = 'Score: ' + this.score.toString();
+        // Play the scoring sound effect
+        cc.audioEngine.playEffect(this.scoreAudio, false);
     },
 
 
